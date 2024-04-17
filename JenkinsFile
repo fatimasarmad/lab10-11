@@ -1,47 +1,35 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:latest' // Use the Node.js Docker image as the agent
-            args '-v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket inside the container
-        }
-    }
-
+    agent any
+    
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/fatimasarmad/lab10-11'
+                git branch: 'main', url: 'https://github.com/fatimasarmad/lab10-11'
             }
         }
-
+        
         stage('Dependency Installation') {
             steps {
-                bat 'npm install'
+                bat 'npm install' // Assuming npm is used for dependency installation
             }
         }
-
+        
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build('my-web-app:latest')
-                }
+                bat 'docker build -t your_image_name .'
             }
         }
-
+        
         stage('Run Docker Image') {
             steps {
-                script {
-                    docker.run('my-web-app:latest')
-                }
+                bat 'docker run -d -p 8080:80 your_image_name'
             }
         }
-
+        
         stage('Push Docker Image') {
             steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        docker.image('my-web-app:latest').push('latest')
-                    }
-                }
+                bat 'docker login -u FatimaSarmad -p @hehe@@'
+                bat 'docker push FatimaSarmad/your_image_name'
             }
         }
     }
