@@ -26,11 +26,5 @@ pipeline {
             }
         }
         
-        stage('Push Docker Image') {
-            steps {
-                bat 'docker login -u FatimaSarmad -p @hehe@@'
-                bat 'docker push FatimaSarmad/your_image_name'
-            }
-        }
     }
 }
